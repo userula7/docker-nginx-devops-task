@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    expose:
+      - "5000"
+    deploy:
+      replicas: 2  # Указываем два экземпляра
+      restart_policy:
+        condition: on-failure
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - web
